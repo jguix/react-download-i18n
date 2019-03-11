@@ -3,3 +3,8 @@ body {
   padding: 1em;
   font-family: sans-serif;
 }
+
+td {
+  border-top: solid 1px black;
+  padding: 0.5em 0.5em 1.0em 0.5em;
+}

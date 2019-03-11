@@ -21,7 +21,7 @@ export default class App extends Component {
       this.setState({locales});
 
       let localeTranslations = {};
-      locales.map((locale) => {
+      locales.map((locale) =>
         DownloadI18nService.getLocaleTranslations(
           project_id,
           locale.name,
@@ -31,23 +31,9 @@ export default class App extends Component {
           if (Object.keys(localeTranslations).length === localeNumber) {
             this.setState({localeTranslations});
           }
-        });
-      });
+        })
+      );
     });
-
-    // DownloadI18nService.getLocale(project_id, locale_id).then(locale => {
-    //   console.log(`Locale details: ${JSON.stringify(locale)}`);
-    //   this.setState({locale});
-    // });
-
-    // DownloadI18nService.getLocaleTranslations(
-    //   project_id,
-    //   locale_id,
-    //   file_format
-    // ).then(localeTranslations => {
-    //   console.log(`Locale translations: ${JSON.stringify(localeTranslations)}`);
-    //   this.setState({localeTranslations});
-    // });
   }
 
   render() {
@@ -55,28 +41,39 @@ export default class App extends Component {
     return (
       <div>
         <h1>React DownloadI18n</h1>
-        { locales && (
-          <div>
-            <p>Locales:</p>
-            { locales.map( locale => (<li key={locale.id}>{locale.name}</li>))}
-          </div>          
+        <p>Translations downloaded from phraseapp.</p>
+        <p>Edit translations <a href="https://demo.phraseapp.com">here</a>.</p>
+        { locales && localeTranslations && (
+          <table>
+            <thead>
+              <tr>
+                { locales.map( locale => (<th key={locale.id}>{locale.name}</th>)) }
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+              { locales.map( locale => {
+                    return (
+                      <td>
+                        <li key={1}>Created at: {locale.created_at}</li>
+                        <li key={2}>Updated at: {locale.updated_at}</li>
+                      </td>
+                    );
+                }) }
+              </tr>
+              <tr>
+                { locales.map( locale => {
+                    const localeTranslation = localeTranslations[locale.name];
+                    return (
+                      <td>
+                        { Object.keys(localeTranslation).map((translationKey) => { return (<li key={1000 * Math.random()}>{translationKey}: {localeTranslation[translationKey]}</li>) } )}
+                      </td>
+                    );
+                }) }
+              </tr>
+            </tbody>
+          </table>
         ) }
-        { locales && localeTranslations && locales.map( locale => {
-          const localeTranslation = localeTranslations[locale.name];
-          return (
-            <div>
-              <div>
-                <p>Locale <b>{locale.name}</b>:</p>
-                <li>Created at: {locale.created_at}</li>
-                <li>Updated at: {locale.updated_at}</li>
-              </div>
-              <div>
-                <p>Locale <b>{locale.name}</b> translations: </p>
-                { Object.keys(localeTranslation).map((translationKey) => { return (<li key={1000 * Math.random()}>{translationKey}: {localeTranslation[translationKey]}</li>) } )}
-              </div>
-            </div>
-          );
-        }) }
       </div>
     )};    
   }
