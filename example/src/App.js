@@ -54,9 +54,9 @@ export default class App extends Component {
               <tr>
               { locales.map( locale => {
                     return (
-                      <td>
-                        <li key={1}>Created at: {locale.created_at}</li>
-                        <li key={2}>Updated at: {locale.updated_at}</li>
+                      <td key={locale.name}>
+                        <li key="1">Created at: {locale.created_at}</li>
+                        <li key="2">Updated at: {locale.updated_at}</li>
                       </td>
                     );
                 }) }
@@ -65,8 +65,8 @@ export default class App extends Component {
                 { locales.map( locale => {
                     const localeTranslation = localeTranslations[locale.name];
                     return (
-                      <td>
-                        { Object.keys(localeTranslation).map((translationKey) => { return (<li key={1000 * Math.random()}>{translationKey}: {localeTranslation[translationKey]}</li>) } )}
+                      <td key={locale.name}>
+                        { Object.keys(localeTranslation).map((translationKey) => { return (<li key={(1000 * Math.random()).toString()}>{translationKey}: {localeTranslation[translationKey]}</li>) } )}
                       </td>
                     );
                 }) }
