@@ -13,17 +13,58 @@ npm install --save react-download-i18n
 ## Usage
 
 ```tsx
-import * as React from 'react'
+export default class App extends Component {
+  constructor(props) {
+    super(props);
 
-import MyComponent from 'react-download-i18n'
-
-class Example extends React.Component {
-  render () {
-    return (
-      <MyComponent />
-    )
+    this.state = {};
   }
-}
+  componentDidMount() {
+    DownloadI18nService.init("phraseapp", myToken);
+    DownloadI18nService.listLocales(project_id).then(locales => {
+      this.setState({locales});
+    });
+
+    DownloadI18nService.getLocale(project_id, locale_id).then(locale => {
+      this.setState({locale});
+    });
+
+    DownloadI18nService.getLocaleTranslations(
+      project_id,
+      locale_id,
+      file_format
+    ).then(localeTranslations => {
+      this.setState({localeTranslations});
+    });
+  }
+
+  render() {
+    const { locales, locale, localeTranslations } = this.state;
+    return (
+      <div>
+        <h1>React DownloadI18n</h1>
+        { locales && (
+          <div>
+            <p>Locales:</p>
+            { locales.map( locale => (<li key={locale.id}>{locale.name}</li>))}
+          </div>          
+        ) }
+        { locale && (
+          <div>
+            <p>Locale {locale.name}:</p>
+            <li>Created at: {locale.created_at}</li>
+            <li>Updated at: {locale.updated_at}</li>
+          </div>          
+        ) }
+        { locale && localeTranslations && (
+          <div>
+            <p>Locale {locale.name} translations</p>
+            { Object.keys(localeTranslations).map((translationKey) => { return (<li key={1000 * Math.random()}>{translationKey}: {localeTranslations[translationKey]}</li>) } )}
+          </div>
+        )}
+      </div>
+    )};    
+  }
 ```
 
 ## License
